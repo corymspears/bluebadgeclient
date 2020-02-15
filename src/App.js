@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import SiteBar from './home/navbar';
 import Auth from './auth/auth';
 import BoardIndex from './boards/boardindex';
-
+import './App.css'
 
 
 function App() {
@@ -19,21 +19,29 @@ function App() {
     console.log(sessionToken);
 }
 
+const updateEmail = (newEmail) => {
+  localStorage.setItem('email', newEmail);
+}
+
   const clearToken = () => {
     localStorage.clear();
     setSessionToken('');
 }
+
 const protectedViews = () => {
   return (sessionToken === localStorage.getItem('token') ? <BoardIndex token={sessionToken}/>
-  : <Auth updateToken={updateToken}/>)
+  : <Auth updateToken={updateToken} updateEmail={updateEmail} /> 
+  )
  }
 
 //render method is down here
   return (
-    <div>
-      <SiteBar clearToken={clearToken}/>
-      {protectedViews()}
-    </div>
+    <div className="page">
+      <div>
+        <SiteBar clearToken={clearToken}/>
+        {protectedViews()}
+      </div>
+    </div>    
   );
 }
 

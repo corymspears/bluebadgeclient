@@ -1,21 +1,80 @@
 import React, {useState} from 'react';
-import { Container, Col, Row, Button, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, ListGroup, ListGroupItem } from 'reactstrap';
+import { Container, Col, Row, Button, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, ListGroup, ListGroupItem, 
+        Card, CardText, CardBody,
+        CardTitle
+      } from 'reactstrap';
+import '../App.css'
 
 const Builder = (props) => {
 
     const handleSubmit = (e) => { //1
         e.preventDefault();
+
+        var pedals = buildPedalArray();    
+        var token = localStorage.getItem('token');
+        var email = localStorage.getItem('email');
+
         fetch('http://localhost:5000/api/userpedal/', { //3
           method: 'POST', 
-          body: JSON.stringify({pedalId:[1, 2, 3]}), //4
+          body: JSON.stringify({
+              email: email,
+              pedals: pedals,
+            }),
           headers: new Headers({
             'Content-Type': 'application/json',
             'Authorization': props.token //5
           })
         }) .then((res) => res.json())
         .then((result) => { //6
-          console.log(result);
+          console.log(result, token);
         })
+      }
+
+      const handleDelete = (e) => { //1
+        e.preventDefault();
+
+        var pedals = buildPedalArray();    
+        var token = localStorage.getItem('token');
+        var email = localStorage.getItem('email');
+
+        fetch('http://localhost:5000/api/userpedal/', { //3
+          method: 'DELETE', 
+          body: JSON.stringify({
+              email: email,
+              pedals: pedals,
+            }),
+          headers: new Headers({
+            'Content-Type': 'application/json',
+            'Authorization': props.token //5
+          })
+        }) .then((res) => res.json())
+        .then((result) => { //6
+          console.log(result, token);
+        })
+      }
+
+      const handleLoad = (e) => { //1
+        e.preventDefault();
+
+        var token = localStorage.getItem('token');
+        var email = localStorage.getItem('email');
+
+        fetch('http://localhost:5000/api/userpedal/' + email, { //3
+          method: 'GET', 
+          headers: new Headers({
+            'Content-Type': 'application/json',
+            'Authorization': props.token //5
+          })
+        }) .then((res) => res.json())
+        .then((result) => { //6
+          console.log(result, token);
+        })
+      }
+
+      function buildPedalArray() {
+          var array = [pedal1name, pedal2name, pedal3name, pedal4name, pedal5name, pedal6name]
+          console.log(array);
+          return array;
       }
 
       // Functions for dropdowns
@@ -56,7 +115,7 @@ const Builder = (props) => {
         );
         }
 
-      // Functions for populating liste items
+      // Functions for populating list items
         const [pedal1name, setpedal1name] = useState('Empty');
         const populate1 = (e, pedalname, id) => {
             setpedal1name(
@@ -99,6 +158,8 @@ const Builder = (props) => {
         );
         }
 
+
+
         // const [pedalgroup, setpedalgroup] = useState([]);
         // const setpedalgroup = (e, pedalname, id) => {
         //     setpedal1name(
@@ -107,6 +168,8 @@ const Builder = (props) => {
         // }
     
     return (
+    <div className="builder">
+<Col>
     <Container className="wrapper">
         <Row>
         <Col sm={{ size: 3 }}>  
@@ -115,46 +178,46 @@ const Builder = (props) => {
                 <br/>
                 <br/>
                     <Row>
-                        <h4>Select Your Pedals</h4>   
+                        <h4 className="pedalselect">Select Your Pedals</h4>   
                     </Row>
                 <br/>
                     <Row>
                     <ButtonDropdown direction="right" isOpen={dropdownOpen1} toggle={toggle1}>
-                        <DropdownToggle caret>
+                        <DropdownToggle className="toggles" caret>
                         Select Your First Pedal
                         </DropdownToggle>
                         <DropdownMenu>
                             <DropdownItem header>Delay</DropdownItem>
-                            <DropdownItem onClick={(e)=>populate1(e, 'Boss DD-7', 1)} value='1' pvalue='1'>Boss DD-7</DropdownItem>
-                            <DropdownItem onClick={(e)=>populate1(e, 'MXR Carbon Copy', 1)} value='2' pvalue='1'>MXR Carbon Copy</DropdownItem>
-                            <DropdownItem onClick={(e)=>populate1(e, 'TC Electronic Feedback', 1)} value='3' pvalue='1'>TC Electronic Flashback</DropdownItem>
+                            <DropdownItem onClick={(e)=>populate1(e, 'Boss DD-7', 1)}>Boss DD-7</DropdownItem>
+                            <DropdownItem onClick={(e)=>populate1(e, 'MXR Carbon Copy', 2)}>MXR Carbon Copy</DropdownItem>
+                            <DropdownItem onClick={(e)=>populate1(e, 'TC Electronic Feedback', 3)}>TC Electronic Flashback</DropdownItem>
                             <DropdownItem divider />
                             <DropdownItem header>Overdrive/Distortion</DropdownItem>
-                            <DropdownItem onClick={(e)=>populate1(e, 'Fulltone OCD', 1)} value='4' pvalue='1'>Fulltone OCD</DropdownItem>
-                            <DropdownItem onClick={(e)=>populate1(e, 'JHS Morning Glory', 1)} value='5' pvalue='1'>JHS Morning Glory</DropdownItem>
-                            <DropdownItem onClick={(e)=>populate1(e, 'Ibanez TS9 Tubescreamer', 1)} value='6' pvalue='1'>Ibanez TS9 Tubescreamer</DropdownItem>
+                            <DropdownItem onClick={(e)=>populate1(e, 'Fulltone OCD', 4)}>Fulltone OCD</DropdownItem>
+                            <DropdownItem onClick={(e)=>populate1(e, 'JHS Morning Glory', 5)}>JHS Morning Glory</DropdownItem>
+                            <DropdownItem onClick={(e)=>populate1(e, 'Ibanez TS9 Tubescreamer', 6)}>Ibanez TS9 Tubescreamer</DropdownItem>
                             <DropdownItem divider />
                             <DropdownItem header>Reverb</DropdownItem>
-                            <DropdownItem onClick={(e)=>populate1(e, 'Boss RV-6', 1)} value='7' pvalue='1'>Boss RV-6</DropdownItem>
-                            <DropdownItem onClick={(e)=>populate1(e, 'TC Electronic Hall of Fame', 1)} value='8' pvalue='1'>TC Electronic Hall of Fame</DropdownItem>
-                            <DropdownItem onClick={(e)=>populate1(e, 'MXR Reverb', 1)} value='9' pvalue='1'>MXR Reverb</DropdownItem>
+                            <DropdownItem onClick={(e)=>populate1(e, 'Boss RV-6', 7)}>Boss RV-6</DropdownItem>
+                            <DropdownItem onClick={(e)=>populate1(e, 'TC Electronic Hall of Fame', 8)}>TC Electronic Hall of Fame</DropdownItem>
+                            <DropdownItem onClick={(e)=>populate1(e, 'MXR Reverb', 9)}>MXR Reverb</DropdownItem>
                             <DropdownItem divider />
                             <DropdownItem header>Modulation</DropdownItem>
-                            <DropdownItem onClick={(e)=>populate1(e, 'Walrus Audio Julia Chorus', 1)} value='10' pvalue='1'>Walrus Audio Julia Chorus</DropdownItem>
-                            <DropdownItem onClick={(e)=>populate1(e, 'Boss BF3 Flanger', 1)} value='11' pvalue='1'>Boss BF3 Flanger</DropdownItem>
-                            <DropdownItem onClick={(e)=>populate1(e, 'MXR phase 90 Phaser', 1)} value='12' pvalue='1'>MXR phase 90 Phaser</DropdownItem>
+                            <DropdownItem onClick={(e)=>populate1(e, 'Walrus Audio Julia Chorus', 10)}>Walrus Audio Julia Chorus</DropdownItem>
+                            <DropdownItem onClick={(e)=>populate1(e, 'Boss BF3 Flanger', 11)}>Boss BF3 Flanger</DropdownItem>
+                            <DropdownItem onClick={(e)=>populate1(e, 'MXR phase 90 Phaser', 12)}>MXR phase 90 Phaser</DropdownItem>
                             <DropdownItem divider />
                             <DropdownItem header>Dynamics</DropdownItem>
-                            <DropdownItem onClick={(e)=>populate1(e, 'Walrus Audio Deep Six Compressor', 1)} value='13' pvalue='1'>Walrus Audio Deep Six Compressor</DropdownItem>
-                            <DropdownItem onClick={(e)=>populate1(e, 'Xotic EP Booster', 1)} value='14' pvalue='1'>Xotic EP Booster</DropdownItem>
-                            <DropdownItem onClick={(e)=>populate1(e, 'Dunlop CryBaby Wah Pedal', 1)} value='15' pvalue='1'>Dunlop CryBaby Wah Pedal</DropdownItem>
+                            <DropdownItem onClick={(e)=>populate1(e, 'Walrus Audio Deep Six Compressor', 13)} value='13' pvalue='1'>Walrus Audio Deep Six Compressor</DropdownItem>
+                            <DropdownItem onClick={(e)=>populate1(e, 'Xotic EP Booster', 14)} value='14' pvalue='1'>Xotic EP Booster</DropdownItem>
+                            <DropdownItem onClick={(e)=>populate1(e, 'Dunlop CryBaby Wah Pedal', 15)} value='15' pvalue='1'>Dunlop CryBaby Wah Pedal</DropdownItem>
                         </DropdownMenu>
                         </ButtonDropdown>
                     </Row>              
                     <br/>
                     <Row>
                     <ButtonDropdown direction="right" isOpen={dropdownOpen2} toggle={toggle2}>
-                        <DropdownToggle caret>
+                        <DropdownToggle className="toggles" caret>
                             Select Your Second Pedal
                         </DropdownToggle>
                         <DropdownMenu>
@@ -188,14 +251,14 @@ const Builder = (props) => {
                     <br/>
                     <Row>
                     <ButtonDropdown direction="right" isOpen={dropdownOpen3} toggle={toggle3}>
-                        <DropdownToggle caret>
+                        <DropdownToggle className="toggles" caret>
                         Select Your Third Pedal
                         </DropdownToggle>
                             <DropdownMenu>
                             <DropdownItem header>Delay</DropdownItem>
                             <DropdownItem onClick={(e)=>populate3(e, 'Boss DD-7', 1)} value='1' pvalue='3'>Boss DD-7</DropdownItem>
                             <DropdownItem onClick={(e)=>populate3(e, 'MXR Carbon Copy', 1)} value='2' pvalue='3'>MXR Carbon Copy</DropdownItem>
-                            <DropdownItem onClick={(e)=>populate3(e, 'TC Electronic Feedback', 1)} value='3' pvalue='3'>TC Electronic Flashback</DropdownItem>
+                            <DropdownItem onClick={(e)=>populate3(e, 'TC Electronic Flashback', 1)} value='3' pvalue='3'>TC Electronic Flashback</DropdownItem>
                             <DropdownItem divider />
                             <DropdownItem header>Overdrive/Distortion</DropdownItem>
                             <DropdownItem onClick={(e)=>populate3(e, 'Fulltone OCD', 1)} value='4' pvalue='3'>Fulltone OCD</DropdownItem>
@@ -222,7 +285,7 @@ const Builder = (props) => {
                     <br/>
                     <Row>
                     <ButtonDropdown direction="right" isOpen={dropdownOpen4} toggle={toggle4}>
-                        <DropdownToggle caret>
+                        <DropdownToggle className="toggles" caret>
                         Select Your Fourth Pedal
                         </DropdownToggle>
                             <DropdownMenu>
@@ -256,7 +319,7 @@ const Builder = (props) => {
                     <br/>
                     <Row>
                     <ButtonDropdown direction="right" isOpen={dropdownOpen5} toggle={toggle5}>
-                            <DropdownToggle caret>
+                            <DropdownToggle className="toggles" caret>
                             Select Your Fifth Pedal
                             </DropdownToggle>
                                 <DropdownMenu>
@@ -290,7 +353,7 @@ const Builder = (props) => {
                     <br/>
                     <Row>
                     <ButtonDropdown direction="right" isOpen={dropdownOpen6} toggle={toggle6}>
-                        <DropdownToggle caret>
+                        <DropdownToggle className="toggles" caret>
                             Select Your Sixth Pedal
                         </DropdownToggle>
                             <DropdownMenu>
@@ -321,53 +384,78 @@ const Builder = (props) => {
                             </DropdownMenu>
                         </ButtonDropdown>
                     </Row>
+                    <br/>
+                <div className="boardbuttons">
+                    <Row className="saveandupdate">
+                        <Button className="savebutton" size="lg" onClick={handleSubmit}>Save</Button>
+                    </Row>
+                    <Row className="delete">
+                        <Button className="deletebutton" size="lg" onClick={handleDelete}>Delete</Button>
+                    </Row>        
+                </div>
             </div>
         </Col> 
                   
         <Col>
-            <div>
-                <Col md={{ size: 10, offset: 2 }}>
-                    <ListGroup>
-                        <h5>Pedal 1</h5>
-                        <ListGroupItem>{pedal1name}</ListGroupItem>
-                        <br/>
-                        <h5>Pedal 2</h5>
-                        <ListGroupItem>{pedal2name}</ListGroupItem>
-                        <br/>
-                        <h5>Pedal 3</h5>
-                        <ListGroupItem>{pedal3name}</ListGroupItem>
-                        <br/>
-                        <h5>Pedal 4</h5>
-                        <ListGroupItem>{pedal4name}</ListGroupItem>
-                        <br/>
-                        <h5>Pedal 5</h5>
-                        <ListGroupItem>{pedal5name}</ListGroupItem>
-                        <br/>
-                        <h5>Pedal 6</h5>
-                        <ListGroupItem>{pedal6name}</ListGroupItem>         
-                    </ListGroup>
-                </Col>
-        
-            </div>
-
-            <div>
-                <br/>
-                <br/>
+            <div className="pedaldisplay">
                     <Row>
-                        <Col>
-                        <Button onClick={handleSubmit}>Save</Button>
+                        <Col sm="4">
+                            <Card className="cards">
+                                <CardBody>
+                                    <CardTitle className="cardtitle">Pedal 4</CardTitle>
+                                    <CardText className="cardtext">{pedal4name}</CardText>
+                                </CardBody>
+                            </Card>
                         </Col>
-                        <Col>
-                        <Button>Edit</Button>
+                        <Col sm="4">
+                            <Card className="cards">
+                                <CardBody>
+                                    <CardTitle className="cardtitle">Pedal 5</CardTitle>
+                                    <CardText className="cardtext">{pedal5name}</CardText>
+                                </CardBody>
+                            </Card>
                         </Col>
-                        <Col>
-                        <Button>Delete</Button>
+                        <Col sm="4">
+                            <Card className="cards">
+                                <CardBody>
+                                    <CardTitle className="cardtitle">Pedal 6</CardTitle>
+                                    <CardText className="cardtext">{pedal6name}</CardText>
+                                </CardBody>
+                            </Card>
+                        </Col>        
+                    </Row>
+                    <Row>
+                        <Col sm="4">
+                            <Card className="cards">
+                                <CardBody>
+                                    <CardTitle className="cardtitle">Pedal 3</CardTitle>
+                                    <CardText className="cardtext">{pedal3name}</CardText>
+                                </CardBody>
+                            </Card>
                         </Col>
-                    </Row>   
+                        <Col sm="4">
+                            <Card className="cards">
+                                <CardBody>
+                                    <CardTitle className="cardtitle">Pedal 2</CardTitle>
+                                    <CardText className="cardtext">{pedal2name}</CardText>
+                                </CardBody>
+                            </Card>
+                        </Col>
+                        <Col sm="4">
+                            <Card className="cards">
+                                <CardBody>
+                                    <CardTitle className="cardtitle">Pedal 1</CardTitle>
+                                    <CardText className="cardtext">{pedal1name}</CardText>
+                                </CardBody>
+                            </Card>
+                        </Col>        
+                    </Row> 
             </div>
         </Col>
         </Row>
-    </Container>     
+    </Container>  
+</Col>    
+    </div>  
     );             
 }
 

@@ -4,13 +4,13 @@ import Builder from './builder';
 
 const BoardIndex = (props) => {
  return(
-   <div>
-    <Row>
-      <Col>
-        <Builder />
-      </Col>
-    </Row>
-   </div>
+    <div>
+      <Row>
+        <Col>
+          <Builder token={props.token}/>
+        </Col>
+      </Row>
+    </div>
  )
 }
 

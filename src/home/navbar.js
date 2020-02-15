@@ -8,6 +8,7 @@ import {
     NavItem,
     Button
 } from 'reactstrap';
+import '../App.css';
 
 const Sitebar = (props) => { 
   const [isOpen, setisOpen] = useState(false); 
@@ -17,13 +18,13 @@ const Sitebar = (props) => {
 }
 
   return ( 
-    <Navbar color="faded" light expand="md">
-    <NavbarBrand href="/">Pedalboard Builder</NavbarBrand>
+    <Navbar className="navbar" color="faded" light expand="md">
+    <NavbarBrand className="navbarbrand" href="/">Pedalboard Builder</NavbarBrand>
     <NavbarToggler onClick={toggle}/>
     <Collapse isOpen={isOpen} navbar>
       <Nav className="ml-auto" navbar>
           <NavItem>
-            <Button onClick={props.clearToken}>Logout</Button>
+            <Button className="logoutbtn" onClick={props.clearToken}>Logout</Button>
           </NavItem>
       </Nav>
     </Collapse>
